@@ -9,7 +9,11 @@ import (
 func LoadAsciiChars(filename string) (map[byte][]string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
-		return nil, fmt.Errorf("error opening file: %w", err)
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("error: file '%s' not found", filename)
+		} else {
+			return nil, fmt.Errorf("error opening file: %w", err)
+		}
 	}
 	defer file.Close()
 
@@ -30,6 +34,9 @@ func LoadAsciiChars(filename string) (map[byte][]string, error) {
 			count = 0
 		}
 
+	}
+	if len(asciiChars) == 0 {
+		return nil, fmt.Errorf("error: file '%s' is empty", filename)
 	}
 
 	if err := scanner.Err(); err != nil {

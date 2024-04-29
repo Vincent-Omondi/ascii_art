@@ -7,17 +7,20 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run . <string>")
+	if len(os.Args) < 2 || len(os.Args) > 2 {
+		fmt.Println("Usage: go run . <string>, use string as one argument in quotes")
+		return
 	}
 
-	asciiChars, err := LoadAsciiChars("thinkertoy.txt")
+	asciiChars, err := LoadAsciiChars("standard.txt")
 	if err != nil {
 		fmt.Println("Error loading ASCII characters", err)
 		return
 	}
-	// fmt.Printf("%s\n", asciiChars['h'])
+
 	args := os.Args[1]
+
+	args = strings.ReplaceAll(args, "\n", "\\n")
 	arguments := strings.Split(args, "\\n")
 	if args == "" {
 		return
@@ -36,6 +39,18 @@ func main() {
 }
 
 func printAsciiArt(text string, asciiChars map[byte][]string) {
+	text = strings.ReplaceAll(text, "\\r", "\r")
+	text = strings.ReplaceAll(text, "\\b", "\b")
+	text = strings.ReplaceAll(text, "\\t", "    ")
+	text = strings.ReplaceAll(text, "\\f", "\f")
+	text = strings.ReplaceAll(text, "\\a", "\a")
+	text = strings.ReplaceAll(text, "\\v", "\v")
+	for _, char := range text {
+		if char > 127 || char < 32 {
+			fmt.Printf("Error: Character %q is not accepted\n", char)
+			return
+		}
+	}
 	for i := 0; i < 8; i++ {
 		printLine(text, asciiChars, i) // call helper function for each line
 		fmt.Println()
