@@ -26,14 +26,14 @@ func Test_main(t *testing.T) {
 		{
 			name:  "Simple Text",
 			input: "Hello",
-			output: `      
- _    _          _   _          
+			output: ` _    _          _   _          
 | |  | |        | | | |         
 | |__| |   ___  | | | |   ___   
 |  __  |  / _ \ | | | |  / _ \  
 | |  | | |  __/ | | | | | (_) | 
 |_|  |_|  \___| |_| |_|  \___/  
-																			
+                                
+                                
 `,
 		},
 		{
